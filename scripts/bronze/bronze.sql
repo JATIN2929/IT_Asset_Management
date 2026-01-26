@@ -16,7 +16,7 @@ BEGIN
         SET @end_time = GETDATE();
         PRINT 'Data Load into Bronze Tables Completed at: ' + CONVERT(NVARCHAR, @end_time, 120);
         PRINT 'Total Duration (seconds): ' + CONVERT(NVARCHAR, DATEDIFF(SECOND, @start_time, @end_time));
-        PRINT 'loading Tables into Broze Tables;'
+        PRINT 'loading Tables into Bronze Tables;'
 
 /*
 ===============================================================================
