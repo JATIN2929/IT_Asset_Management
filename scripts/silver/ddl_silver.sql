@@ -35,7 +35,6 @@ IF OBJECT_ID('silver.user_table', 'U') IS NOT NULL
         staff_id                         INT,
         staff_name              NVARCHAR(50),
         job_title               NVARCHAR(50),
-        grade_level                      INT,
         employee_status        NVARCHAR(50),
         functional_manager      NVARCHAR(50),
         mobile                  NVARCHAR(50),
