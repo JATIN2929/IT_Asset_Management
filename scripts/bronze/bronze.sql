@@ -44,7 +44,7 @@ IF OBJECT_ID('bronze.user_table', 'U') IS NOT NULL
         staff_name              NVARCHAR(50),
         job_title               NVARCHAR(50),
         grade_level                      INT,
-        employee_statues        NVARCHAR(50),
+        employee_status        NVARCHAR(50),
         functional_manager      NVARCHAR(50),
         mobile                  NVARCHAR(50),
         country                 NVARCHAR(50),
