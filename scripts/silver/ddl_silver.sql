@@ -59,7 +59,6 @@ IF OBJECT_ID('silver.asset_allocation_table', 'U') IS NOT NULL
         serial_number             NVARCHAR(50),
         req_id                    NVARCHAR(50),
         issued_date                       DATE,
-        asset_collection_status   NVARCHAR(50),
         product_cost                       INT,
         cost_center                        INT,
         dwh_create_date DATETIME2 DEFAULT GETDATE()
@@ -152,7 +151,6 @@ IF OBJECT_ID('silver.handover_table', 'U') IS NOT NULL
     CREATE TABLE silver.handover_table (
         date                            DATE,
         staff_id                         INT,
-        staff_name              NVARCHAR(50),
         laptop_model            NVARCHAR(50),
         laptop_serial_number    NVARCHAR(50),         
         other_accessories      NVARCHAR(255),
