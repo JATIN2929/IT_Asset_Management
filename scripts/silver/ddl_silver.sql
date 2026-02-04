@@ -209,3 +209,6 @@ END TRY
             PRINT '=========================================='
 	END CATCH
 END
+
+
+SELECT * FROM SILVER.asset_allocation_table WHERE product_id = 8 AND staff_id =100099158
