@@ -432,20 +432,67 @@ GO
 
 CREATE VIEW gold.fact_store_assets_table AS 
 
+WITH storing_cte AS 
+(
+    SELECT 
+    old_asset_model AS laptop_model,
+    old_asset_serial_number AS laptop_serial_number,
+    'Breakfix' AS remarks
+    FROM SILVER.breakfix_table
+    WHERE old_asset_model IN ('HP Book 2.0 Model','Dell Laptop X12 Model','Lenovo laptop 324 Model','Mac Book M2 Model')
+
+    UNION ALL
+
+    SELECT 
+    replaced_asset_model AS laptop_model,
+    replaced_asset_serial_number AS laptop_serial_number,
+    'Breakfix' AS remarks
+    FROM SILVER.breakfix_table
+    WHERE replaced_asset_model IN ('HP Book 2.0 Model','Dell Laptop X12 Model','Lenovo laptop 324 Model','Mac Book M2 Model')
+
+    UNION ALL
+
+    SELECT 
+    laptop_model,
+    laptop_serial_number,
+    'Handover' AS remarks
+    FROM Silver.handover_table
+    WHERE laptop_model IN ('HP Book 2.0 Model','Dell Laptop X12 Model','Lenovo laptop 324 Model','Mac Book M2 Model')
+
+    UNION ALL 
+
+    SELECT 
+    laptop_model,
+    laptop_serial_number,
+    'Physical Damage'
+    FROM Silver.physical_damage_table
+    WHERE laptop_model IN ('HP Book 2.0 Model','Dell Laptop X12 Model','Lenovo laptop 324 Model','Mac Book M2 Model')
+)
 
 SELECT
        s.laptop_model,
        s.laptop_serial_number,
-       [status],
+       CASE
+            WHEN EXISTS(
+                SELECT 1 FROM storing_cte WHERE cte.laptop_serial_number = s.laptop_serial_number
+            ) THEN 'stock'
+            ELSE s.[status]
+        END AS [status],
        am.manufacturing_date,
        end_of_life,
        am.warranty_period_months,
-       am.product_service_cost
+       am.product_service_cost,
+       CASE
+            WHEN EXISTS(
+                 SELECT 1 FROM storing_cte WHERE cte.laptop_serial_number = s.laptop_serial_number
+            ) THEN cte.remarks
+            ELSE 'ALLOCATED'
+       END AS remarks
 FROM Silver.store_assets_table s
 LEFT JOIN SILVER.assets_master_table am
 ON am.product_name = s.laptop_model
-LEFT JOIN SILVER.handover_table h
-ON h.laptop_serial_number = s.laptop_serial_number
+LEFT JOIN storing_cte cte
+ON cte.laptop_serial_number = s.laptop_serial_number
 
 GO
 
@@ -454,3 +501,13 @@ GO
 Creating Gold Facts gold.fact_daily_asset_management_table
 ===========================================================
 */
+
+IF OBJECT_ID('gold.fact_daily_asset_management_table', 'V') IS NOT NULL
+    DROP VIEW gold.fact_daily_asset_management_table;
+GO
+
+CREATE VIEW gold.fact_daily_asset_management_table AS 
+
+WITH  
+
+GO
