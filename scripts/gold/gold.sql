@@ -422,6 +422,25 @@ GO
 
 /*
 =======================================================
+Creating Gold Facts gold.fact_missing_asset_table
+=======================================================
+*/
+
+IF OBJECT_ID('gold.fact_missing_asset_table', 'V') IS NOT NULL
+    DROP VIEW gold.fact_missing_asset_table;
+GO
+
+CREATE VIEW gold.fact_missing_asset_table AS 
+SELECT
+        staff_id,
+        [date],
+        missing_asset,
+        cost_code
+FROM Silver.missing_asset_table
+GO
+
+/*
+=======================================================
 Creating Gold Facts gold.fact_store_assets_table
 =======================================================
 */
@@ -738,4 +757,6 @@ GO
 SELECT * FROM Gold.fact_user_asset_info_table
 GO
 SELECT * FROM GOLD.fact_user_info_table
+GO
+SELECT * FROM Gold.fact_missing_asset_table
 GO
