@@ -508,6 +508,234 @@ GO
 
 CREATE VIEW gold.fact_daily_asset_management_table AS 
 
-WITH  
+WITH daily_transaction AS 
+(
+    SELECT 
+        [DATE] AS [DATE],
+        staff_id AS staff_id,
+        req_id AS req_id,
+        NULL AS old_laptop_model,
+        NULL AS old_laptop_model_serial_number,
+        NULL AS new_laptop_model,
+        NULL AS new_laptop_model_serial_number,
+        LTRIM(RTRIM(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(accessories, CHAR(160), ' '),
+                            CHAR(9), ' '),
+                        CHAR(10), ' '),
+                    CHAR(13), ' ')
+        )) AS issued_accessories,
+        NULL AS temporary_accessories,
+        NULL AS handover_accessories,
+        NULL AS missing_asset,
+        NULL AS cost_code,
+        NULL AS damage_detail,
+        NULL AS remarks,
+        am.cost AS production_cost  
+    FROM SILVER.issued_accessories_table i
+    LEFT JOIN silver.assets_master_table am
+    ON am.product_name = i.accessories
 
+    UNION ALL 
+
+    SELECT 
+        [DATE] AS [DATE],
+        staff_id AS staff_id,
+        NULL AS req_id,
+        old_asset_model AS old_laptop_model,
+        old_asset_serial_number old_laptop_model_serial_number,
+        replaced_asset_model AS new_laptop_model,
+        replaced_asset_serial_number AS new_laptop_model_serial_number,
+        NULL AS issued_accessories,
+        NULL AS temporary_accessories,
+        NULL AS handover_accessories,
+        NULL AS missing_asset,
+        NULL AS cost_code,
+        NULL AS damage_detail,
+        LTRIM(RTRIM(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(remarks, CHAR(160), ' '),
+                            CHAR(9), ' '),
+                        CHAR(10), ' '),
+                    CHAR(13), ' ')
+        )) AS remarks,
+        am.cost AS production_cost  
+    FROM SILVER.breakfix_table b
+    LEFT JOIN silver.assets_master_table am
+    ON am.product_name = b.replaced_asset_model
+
+    UNION ALL
+
+    SELECT 
+        [DATE] AS [DATE],
+        staff_id AS staff_id,
+        NULL AS req_id,
+        NULL AS old_laptop_model,
+        NULL AS old_laptop_model_serial_number,
+        NULL AS new_laptop_model,
+        NULL AS new_laptop_model_serial_number,
+        NULL AS issued_accessories,
+        LTRIM(RTRIM(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(accessories, CHAR(160), ' '),
+                            CHAR(9), ' '),
+                        CHAR(10), ' '),
+                    CHAR(13), ' ')
+        )) AS temporary_accessories,
+        NULL AS handover_accessories,
+        NULL AS missing_asset,
+        NULL AS cost_code,
+        NULL AS damage_detail,
+        NULL AS remarks,
+        am.cost AS production_cost  
+    FROM SILVER.temporary_asset_table t
+    LEFT JOIN silver.assets_master_table am
+    ON am.product_name = t.accessories   
+
+    UNION ALL
+
+    SELECT 
+        [DATE] AS [DATE],
+        staff_id AS staff_id,
+        NULL AS req_id,
+        laptop_model AS old_laptop_model,
+        laptop_serial_number old_laptop_model_serial_number,
+        NULL AS new_laptop_model,
+        NULL AS new_laptop_model_serial_number,
+        NULL AS issued_accessories,
+        NULL AS temporary_accessories,
+        LTRIM(RTRIM(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(other_accessories, CHAR(160), ' '),
+                            CHAR(9), ' '),
+                        CHAR(10), ' '),
+                    CHAR(13), ' ')
+        )) AS handover_accessories,
+        NULL AS missing_asset,
+        NULL AS cost_code,
+        NULL AS damage_detail,
+        LTRIM(RTRIM(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(remarks, CHAR(160), ' '),
+                            CHAR(9), ' '),
+                        CHAR(10), ' '),
+                    CHAR(13), ' ')
+        )) AS remarks,
+        am.cost AS production_cost  
+    FROM SILVER.handover_table h
+    LEFT JOIN silver.assets_master_table am
+    ON am.product_name = h.other_accessories 
+
+    UNION ALL
+
+    SELECT 
+        [DATE] AS [DATE],
+        staff_id AS staff_id,
+        NULL AS req_id,
+        laptop_model AS old_laptop_model,
+        laptop_serial_number AS old_laptop_model_serial_number,
+        NULL AS new_laptop_model,
+        NULL AS new_laptop_model_serial_number,
+        NULL AS issued_accessories,
+        NULL AS temporary_accessories,
+        NULL AS handover_accessories,
+        NULL AS missing_asset,
+        cost_code, 
+        damage_detail AS damage_detail,
+        NULL AS remarks,
+        am.cost AS production_cost  
+    FROM SILVER.physical_damage_table p
+    LEFT JOIN silver.assets_master_table am
+    ON am.product_name = p.laptop_model   
+
+    UNION ALL
+
+    SELECT 
+        [DATE] AS [DATE],
+        staff_id AS staff_id,
+        NULL AS req_id,
+        NULL AS old_laptop_model,
+        NULL AS old_laptop_model_serial_number,
+        NULL AS new_laptop_model,
+        NULL AS new_laptop_model_serial_number,
+        NULL AS issued_accessories,
+        NULL AS temporary_accessories,
+        NULL AS handover_accessories,
+        LTRIM(RTRIM(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(missing_asset, CHAR(160), ' '),
+                            CHAR(9), ' '),
+                        CHAR(10), ' '),
+                    CHAR(13), ' ')
+        )) AS missing_asset,
+        cost_code, 
+        NULL AS damage_detail,
+        NULL AS remarks,
+        am.cost AS production_cost  
+    FROM SILVER.missing_asset_table m
+    LEFT JOIN silver.assets_master_table am
+    ON am.product_name = m.missing_asset  
+)
+
+    SELECT 
+        [date],
+        d.staff_id,
+        d.req_id,
+        d.old_laptop_model,
+        d.old_laptop_model_serial_number,
+        d.new_laptop_model,
+        d.new_laptop_model_serial_number,
+        d.issued_accessories,
+        d.temporary_accessories,
+        d.handover_accessories,
+        d.missing_asset,
+        CASE
+            WHEN d.cost_code IS NULL THEN u.cost_center
+            ELSE d.cost_code
+        END cost_code,
+        d.damage_detail,
+        d.remarks,
+        d.production_cost
+    FROM daily_transaction d
+    LEFT JOIN silver.user_table u
+    ON u.staff_id = d.staff_id
+GO
+
+SELECT * FROM Gold.dim_asset_allocation_table
+GO
+SELECT * FROM GOLD.dim_assets_master_table
+GO
+SELECT * FROM GOLD.dim_store_assets_table
+GO
+SELECT * FROM Gold.dim_user_table
+GO
+SELECT * FROM GOLD.fact_breakfix_table
+GO
+SELECT * FROM GOLD.fact_daily_asset_management_table
+GO
+SELECT * FROM Gold.fact_handover_table
+GO
+SELECT * FROM GOLD.fact_issued_accessories_table
+GO
+SELECT * FROM GOLD.fact_physical_damage_table
+GO
+SELECT * FROM Gold.fact_store_assets_table
+GO
+SELECT * FROM Gold.fact_temporary_asset_table
+GO
+SELECT * FROM Gold.fact_user_asset_info_table
+GO
+SELECT * FROM GOLD.fact_user_info_table
 GO
