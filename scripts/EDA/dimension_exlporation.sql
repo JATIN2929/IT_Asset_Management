@@ -1,3 +1,17 @@
+
+/*
+===============================================================================
+Dimensions Exploration
+===============================================================================
+Purpose:
+    - To explore the structure of dimension tables.
+	
+SQL Functions Used:
+    - DISTINCT
+    - ORDER BY
+===============================================================================
+*/
+
 -- Check exising job_title 
 SELECT DISTINCT job_title
 FROM GOLD.dim_user_table

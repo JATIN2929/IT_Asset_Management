@@ -1,7 +1,15 @@
---- Check MAX, MIN and AVG cost and product_service_cost 
-SELECT MAX(cost) AS max_cost, MIN(cost) AS min_cost, AVG(cost) AS average_cost FROM Gold.dim_assets_master_table
+/*
+==================================================================
+Date Range Exploration
+==================================================================
+Purpose:
+    - To determine the temporal boundaries of key data points.
+    - To understand the range of historical data.
 
-SELECT MAX(product_service_cost) AS max_product_service_cost, MIN(product_service_cost) min_product_service_cost, AVG(product_service_cost) AS avg_product_service_cost FROM Gold.dim_assets_master_table
+SQL Functions Used:
+    - MIN(), MAX(), DATEDIFF()
+==================================================================
+*/
 
 --- Check oldest and youngest manufacturing date and end of life date and difference 
 SELECT MIN(manufacturing_date) AS oldest_manufacturing_date, MAX(manufacturing_date) AS youngest_manufacturing_date FROM GOLD.dim_assets_master_table
