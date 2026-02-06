@@ -222,13 +222,14 @@ WITH user_asset_info AS
             'EXIT/LEFT' AS [status]
         FROM Silver.handover_table h
     ),
+
     final_clean AS
     (
         SELECT *,
             ROW_NUMBER() OVER(PARTITION BY product_id,staff_id,staff_name,laptop_model,laptop_serial_number,accessories,req_id ORDER BY staff_id) AS rn
         FROM
             (       
-                SELECT DISTINCT
+                SELECT 
                     CASE 
                         WHEN a.product_id IS NULL THEN am.product_id
                         ELSE a.product_id
@@ -265,10 +266,11 @@ WITH user_asset_info AS
                 ON am.product_name = a.accessories
                 LEFT JOIN Silver.asset_allocation_table al
                 ON al.req_id = a.req_id
-            ) T
+            
+             ) T
     )            
     
-    SELECT product_id,staff_id,staff_name,laptop_model,laptop_serial_number,accessories,req_id,[status] FROM final_clean WHERE rn = 1 ORDER BY staff_id;
+    SELECT product_id,staff_id,staff_name,laptop_model,laptop_serial_number,accessories,req_id,[status] FROM final_clean WHERE rn = 1;
 
 GO
 
