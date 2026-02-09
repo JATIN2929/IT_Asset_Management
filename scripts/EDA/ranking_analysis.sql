@@ -17,7 +17,7 @@ SELECT * FROM (
 SELECT accessories,SUM(total_issues) AS  total_issues , ROW_NUMBER() OVER(ORDER BY SUM(total_issues) DESC) AS ranking FROM (
     SELECT accessories,COUNT(*) AS total_issues FROM GOLD.fact_temporary_asset_table GROUP BY accessories
     UNION ALL
-    SELECT other_accessories AS accessories,COUNT(*) AS total_issues FROM GOLD.fact_handover_table GROUP BY other_accessories
+    SELECT accessories AS accessories,COUNT(*) AS total_issues FROM Gold.fact_breakfix_table GROUP BY other_accessories
     UNION ALL
     SELECT laptop_model AS accessories,COUNT(*) AS total_issues FROM GOLD.fact_physical_damage_table GROUP BY laptop_model
     UNION ALL
