@@ -46,12 +46,27 @@ SELECT COUNT(DISTINCT staff_id) AS total_users_with_breakfix FROM Gold.fact_brea
 SELECT COUNT(*) AS total_breakfix FROM GOLD.fact_breakfix_table 
 SELECT reason, COUNT(*) AS total_breakfix_by_reason FROM GOLD.fact_breakfix_table GROUP BY reason
 SELECT issue, COUNT(*) AS total_breakfix_by_issue FROM GOLD.fact_breakfix_table GROUP BY issue
+SELECT old_asset_model, COUNT(*) AS total_breakfix_by_asset FROM GOLD.fact_breakfix_table GROUP BY old_asset_model 
+SELECT old_asset_model, COUNT(*) AS total_breakfix_by_laptop_model FROM GOLD.fact_breakfix_table WHERE old_asset_model != 'Wireless Headset Cushion' AND old_asset_model != 'JBL Wireless Headset' GROUP BY old_asset_model ORDER BY COUNT(*) DESC
 
 --- Check total users who have taken temporary assets
-SELECT COUNT(DISTINCT staff_id) AS total_users_eith_temporary_asset FROM GOLD.fact_temporary_asset_table
+SELECT COUNT(DISTINCT staff_id) AS total_users_with_temporary_asset FROM GOLD.fact_temporary_asset_table
+SELECT accessories,COUNT(DISTINCT staff_id) AS total_users_with_temporary_asset_by_accessories FROM GOLD.fact_temporary_asset_table GROUP BY accessories
 
 --- Check total users who have taken handover assets
-SELECT COUNT(DISTINCT staff_id) FROM GOLD.fact_handover_table
+SELECT COUNT(DISTINCT staff_id) AS total_users_with_handover FROM GOLD.fact_handover_table
 SELECT remarks,COUNT(DISTINCT staff_id) AS total_handover_by_reason FROM GOLD.fact_handover_table GROUP BY remarks
 
+--- Check total users who have taken physical damage assets
+SELECT COUNT(DISTINCT staff_id) AS total_users_with_physical_damage FROM GOLD.fact_physical_damage_table
+SELECT damage_detail,COUNT(DISTINCT staff_id) AS total_handover_by_damage_detail FROM GOLD.fact_physical_damage_table GROUP BY damage_detail 
 
+--- Check total users who have taken missing assets
+SELECT COUNT(DISTINCT staff_id) AS total_users_with_missing_asset FROM Gold.fact_missing_asset_table
+SELECT missing_asset,COUNT(*) AS total_missing_asset_by_type FROM Gold.fact_missing_asset_table GROUP BY missing_asset
+
+--- Check total assets in store
+SELECT COUNT(*) AS toatal_assets FROM Gold.fact_store_assets_table
+SELECT laptop_model,COUNT(*) AS toatal_assets_by_assets FROM Gold.fact_store_assets_table GROUP BY laptop_model
+SELECT laptop_model,COUNT(*) AS toatal_assets_by_assets FROM Gold.fact_store_assets_table  WHERE laptop_model != 'Wireless Headset Cushion' AND laptop_model != 'JBL Wireless Headset' GROUP BY laptop_model ORDER BY COUNT(*) DESC
+SELECT [status],COUNT(*) AS toatal_assets_by_status FROM Gold.fact_store_assets_table GROUP BY [status]
