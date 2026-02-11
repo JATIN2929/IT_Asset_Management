@@ -164,6 +164,87 @@ IT_Asset_Management/
 
 ---
 
+## ▶️ How to Run Sample Analysis
+
+This section explains how to quickly run and validate sample analysis using the existing SQL scripts and Docker setup.
+
+### 1️⃣ Start the Docker Environment
+
+Ensure Docker and Docker Compose are running, then start all services:
+
+```bash
+docker-compose up -d
+```
+
+Verify running containers:
+
+```bash
+docker ps
+```
+
+---
+
+### 2️⃣ Connect to the Database
+
+Use any SQL client (Azure Data Studio / DBeaver / SSMS) and connect using:
+
+* **Host:** `localhost`
+* **Port:** `1433`
+* **Username:** `sa`
+* **Password:** As defined in `docker-compose.yml`
+
+---
+
+### 3️⃣ Initialize Database & Schemas
+
+Run the scripts inside the `project_initialization/` folder in sequence:
+
+1. Create database
+2. Create schemas (Bronze, Silver, Gold)
+3. Create base tables
+
+This sets up the foundational data warehouse structure.
+
+---
+
+### 4️⃣ Load Sample Data (Bronze Layer)
+
+Execute SQL scripts from the `datasets/` folder to load raw data into **Bronze** tables.
+
+These tables represent uncleaned, source-system data.
+
+---
+
+### 5️⃣ Run Transformations (Silver → Gold)
+
+Execute SQL scripts from the `scripts/` folder:
+
+* Bronze → Silver: data cleaning & normalization
+* Silver → Gold: fact & dimension creation
+
+This produces analytics-ready tables following a Snowflake schema.
+
+---
+
+### 6️⃣ Validate Sample Analysis
+
+Run sample analytical queries such as:
+
+* Asset utilization by department
+* Breakfix count per asset type
+* Inventory aging & EOL tracking
+* Employee-wise asset history
+
+Successful query results confirm the pipeline is working correctly.
+
+---
+
+### 7️⃣ (Optional) Connect BI Tool
+
+Connect Power BI / Tableau to the **Gold layer** tables to build dashboards and reports.
+
+---
+
 ## 🚀 Future Enhancements (Roadmap)
 
 Planned improvements for next iterations:
