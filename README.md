@@ -1,85 +1,202 @@
 # IT_Asset_Management
-This project demonstrates an end-to-end analytics solution for managing IT assets and analyzing data using a data warehouse approach.  The solution includes data modeling, SQL-based transformations, and BI dashboards to support data-driven decision-making.
 
-## **Requirement**
+## 📌 Overview
 
-The objective of this project is to design and implement an **end-to-end IT Asset Management Data Mart** that accurately tracks the **complete lifecycle of IT assets** (primarily laptops and accessories) across an organization. The system is built to support **operational reporting, audit compliance, cost tracking, and analytical insights** using a **Snowflake schema–based data warehouse design**.
+This project demonstrates an **end-to-end analytics solution for IT Asset Management** using a **data warehouse approach**. It is designed to track the complete lifecycle of IT assets (primarily laptops and accessories) and enable **operational reporting, audit compliance, cost tracking, and analytical insights**.
 
-### **Business Problem**
+The solution follows modern **data engineering best practices**, including:
 
-The organization manages thousands of employees and IT assets, resulting in challenges such as:
-
-- Lack of a **single source of truth** for asset allocation and availability
-- Difficulty tracking **asset history** (issuance, breakfix, temporary handover, damage, missing assets)
-- Inconsistent and unstructured accessory data
-- Limited visibility into **asset costs, lifecycle status, and department-wise impact**
-- Manual effort required for audits, breakfix analysis, and inventory reconciliation
-
-This project addresses these challenges by building a structured, scalable, and analytics-ready data model.
+* Bronze → Silver → Gold data layering
+* Snowflake schema–based dimensional modeling
+* SQL-based transformations
+* Containerized environment using Docker (GitHub Codespaces ready)
 
 ---
 
-### **Functional Requirements**
+## 🎯 Objective
 
-1. **Employee Information Management**
-    - Maintain a centralized dimension for employee details including staff ID, role, department, cost center, and employment status.
-    - Support mapping of assets to active employees.
-2. **Asset Master Management**
-    - Store standardized master data for all IT assets including laptops and accessories.
-    - Track asset attributes such as product name, manufacturing date, warranty period, service cost, and end-of-life date.
-3. **Asset Allocation Tracking**
-    - Capture asset issuance details including serial number, allocation date, request ID, and cost center.
-    - Maintain current allocation status for each asset.
-4. **Store Inventory Management**
-    - Track real-time status of assets available in store (stock, issued, disposed).
-    - Ensure store stock is always greater than issued assets to support breakfix and replacement scenarios.
-5. **Event-Based Asset Lifecycle Tracking**
-    - Record all asset lifecycle events including:
-        - Breakfix and replacements
-        - Temporary asset handovers
-        - Permanent handovers
-        - New joiner allocations
-        - Transfers and exits
-    - Maintain historical traceability of old and new asset serial numbers.
-6. **Accessory Management**
-    - Handle multi-value accessory data by splitting and normalizing accessories into analyzable rows.
-    - Track issued, temporary, and handed-over accessories separately.
-7. **Damage and Missing Asset Tracking**
-    - Capture physical damage events for laptops, including damage type and associated cost codes.
-    - Track missing assets and map recovery costs to the respective department or cost center.
-8. **Daily Asset Management Snapshot**
-    - Create a consolidated daily transactional fact table capturing all asset-related activities.
-    - Enable trend analysis, operational reporting, and audit readiness.
+The objective of this project is to design and implement an **IT Asset Management Data Mart** that accurately tracks the full lifecycle of IT assets across an organization and supports data-driven decision-making.
 
 ---
 
-### **Data Architecture Requirements**
+## 🧩 Business Problem
 
-- Implement a **Bronze → Silver → Gold** data layering approach:
-    - **Bronze Layer**: Raw, unstructured, source-system data
-    - **Silver Layer**: Cleaned, standardized, and normalized data
-    - **Gold Layer**: Business-ready fact and dimension tables
-- Use **Snowflake schema** to reduce redundancy and support scalable analytics.
-- Ensure proper grain definition for all fact tables (event-level granularity).
+Organizations managing thousands of employees and IT assets face challenges such as:
 
----
+* No single source of truth for asset allocation and availability
+* Difficulty tracking complete asset history (issue, breakfix, handover, exit)
+* Inconsistent and unstructured accessory data
+* Limited visibility into asset cost, lifecycle, and departmental impact
+* High manual effort for audits, reconciliation, and reporting
 
-### **Analytical & Reporting Requirements**
-
-The data model should enable:
-
-- Asset utilization analysis by department and role
-- Breakfix frequency and replacement cost analysis
-- Inventory aging and end-of-life tracking
-- Damage and missing asset cost attribution
-- Employee-wise and department-wise asset history
-- Audit-ready reporting with full asset traceability
+This project addresses these challenges by creating a **structured, scalable, and analytics-ready data model**.
 
 ---
 
-### **Non-Functional Requirements**
+## ⚙️ Functional Requirements
 
-- Scalable to handle **thousands of employees and assets**
-- Designed for **future BI tools** (Power BI / Tableau)
-- Optimized for query performance and data consistency
-- Easy to extend with new asset types or lifecycle events
+### 1️⃣ Employee Information Management
+
+* Centralized employee dimension
+* Staff ID, department, role, cost center, employment status
+* Asset-to-employee mapping
+
+### 2️⃣ Asset Master Management
+
+* Standardized master data for laptops and accessories
+* Manufacturing date, warranty, service cost, EOL date
+
+### 3️⃣ Asset Allocation Tracking
+
+* Asset issuance details (serial number, allocation date, request ID)
+* Current allocation status tracking
+
+### 4️⃣ Store Inventory Management
+
+* Track stock, issued, and disposed assets
+* Ensure availability for breakfix and replacement scenarios
+
+### 5️⃣ Event-Based Asset Lifecycle Tracking
+
+* Breakfix and replacements
+* Temporary and permanent handovers
+* New joiner allocations
+* Transfers and exits
+* Historical traceability of old and new asset serial numbers
+
+### 6️⃣ Accessory Management
+
+* Normalize multi-value accessory data
+* Track issued, temporary, and handed-over accessories
+
+### 7️⃣ Damage & Missing Asset Tracking
+
+* Capture damage events with cost attribution
+* Track missing assets and recovery costs
+
+### 8️⃣ Daily Asset Snapshot
+
+* Consolidated daily fact table
+* Enables trend analysis, audits, and operational reporting
+
+---
+
+## 🏗️ Data Architecture
+
+The project follows a **layered data architecture**:
+
+### 🔹 Bronze Layer
+
+* Raw, unstructured source-system data
+
+### 🔹 Silver Layer
+
+* Cleaned, standardized, and normalized data
+
+### 🔹 Gold Layer
+
+* Business-ready fact and dimension tables
+* Snowflake schema design
+* Event-level granularity for fact tables
+
+---
+
+## 📊 Analytical & Reporting Capabilities
+
+The data model supports:
+
+* Asset utilization by department and role
+* Breakfix frequency and replacement cost analysis
+* Inventory aging and end-of-life tracking
+* Damage and missing asset cost attribution
+* Employee-wise and department-wise asset history
+* Audit-ready reporting with full traceability
+
+Designed to integrate seamlessly with **Power BI / Tableau**.
+
+---
+
+## 🐳 Docker Setup (GitHub Codespaces Ready)
+
+This project is containerized using Docker to ensure **consistent execution across environments**.
+
+### 🔧 Prerequisites
+
+* Docker installed
+* Docker Compose
+* GitHub Codespaces (optional)
+
+### ▶️ Start Services
+
+```bash
+docker-compose up -d
+```
+
+### ⏹ Stop Services
+
+```bash
+docker-compose down
+```
+
+### 🧠 Why Docker?
+
+* Eliminates environment dependency issues
+* Easy setup for recruiters and reviewers
+* Production-like local development
+* Reproducible data engineering workflow
+
+---
+
+## 📁 Project Structure
+
+```
+IT_Asset_Management/
+│
+├── datasets/                # Raw and processed datasets
+├── scripts/                 # SQL transformation logic
+├── project_initialization/  # Database & schema setup
+├── dataset_architecture/    # Data model & table design
+├── docs/                    # Documentation
+├── Dockerfile               # Docker image definition
+├── docker-compose.yml       # Multi-container setup
+└── README.md
+```
+
+---
+
+## 🚀 Future Enhancements (Roadmap)
+
+Planned improvements for next iterations:
+
+* ✅ Automated ETL orchestration (Airflow / Prefect)
+* ✅ Incremental data loading & SCD handling
+* ✅ Data quality checks & validation rules
+* ✅ Role-based access control (RBAC)
+* ✅ Power BI / Tableau dashboard screenshots
+* ✅ CI/CD pipeline for SQL validation
+* ✅ Support for additional asset types (mobiles, monitors)
+* ✅ Cloud deployment (Azure / AWS)
+
+---
+
+## 🧠 Skills Demonstrated
+
+* Data Warehouse Design (Snowflake Schema)
+* SQL (T-SQL)
+* Data Modeling & Normalization
+* Analytics Engineering Concepts
+* Docker & Containerization
+* GitHub Codespaces
+* Business-to-Technical Translation
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## ⭐ Final Note
+
+This project is built with **real-world enterprise asset management scenarios** in mind and is designed to reflect **production-grade data engineering practices**.
