@@ -13,6 +13,23 @@ The solution follows modern **data engineering best practices**, including:
 
 ---
 
+## 📘 Project Documentation (Notion)
+
+Detailed project documentation, data model explanations, business logic, and design decisions are maintained in Notion.
+
+🔗 **Notion Workspace:**
+[https://opposite-whitefish-f16.notion.site/Asset-Management-2f00875cde048029abfae22f9a0b8c7e?pvs=74](https://opposite-whitefish-f16.notion.site/Asset-Management-2f00875cde048029abfae22f9a0b8c7e?pvs=74)
+
+This documentation includes:
+
+* Detailed requirement analysis
+* Data architecture & schema explanations
+* Business rules and assumptions
+* Asset lifecycle workflows and scenarios
+* Ongoing design notes and future improvements
+
+---
+
 ## 🎯 Objective
 
 The objective of this project is to design and implement an **IT Asset Management Data Mart** that accurately tracks the full lifecycle of IT assets across an organization and supports data-driven decision-making.
@@ -156,6 +173,7 @@ IT_Asset_Management/
 ├── scripts/                 # SQL transformation logic
 ├── project_initialization/  # Database & schema setup
 ├── dataset_architecture/    # Data model & table design
+├── project_documentation/  # Detailed project documentation & design notes
 ├── docs/                    # Documentation
 ├── Dockerfile               # Docker image definition
 ├── docker-compose.yml       # Multi-container setup
